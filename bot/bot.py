@@ -29,11 +29,9 @@ def get_conn():
                      port=os.getenv('DB_PORT'),
                      database=os.getenv('DB_DATABASE'))
 
-
 def cmd_find_phone_numbers(update: Update, context):
     update.message.reply_text('Введите текст для поиска телефонных номеров: ')
     return 'find_phone_numbers'
-
 
 def cmd_find_email(update: Update, context):
     update.message.reply_text('Введите текст для поиска email адресов: ')
@@ -71,7 +69,7 @@ def confirm_phones_database_write(update, context):
             cursor = connection.cursor()
             cleaned_numbers_list = re.findall(r'\d+\.\s*(\d+)', found_phone_numbers)
             for phone_number in cleaned_numbers_list:
-                cursor.execute("INSERT INTO phone_numbers (phone_number) VALUES (%s);",
+                cursor.execute("INSERT INTO phones (phone_number) VALUES (%s);",
                                (phone_number,))
             connection.commit()
             cursor.close()
@@ -153,7 +151,7 @@ def find_emails(update: Update, context):
     update.message.reply_text(
         "Хотите записать найденные email адреса в БД  [Да] / [Нет]:")
     return 'confirm_emails_database_write'
-    # return ConversationHandler.END
+
 
 
 def r_exec(command) -> str:
@@ -202,7 +200,7 @@ def get_phone_numbers(update: Update, context):
     try:
         connection = get_conn()
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM phone_numbers;")
+        cursor.execute("SELECT * FROM phones;")
         data = cursor.fetchall()
         cursor.close()
         connection.close()
@@ -256,11 +254,13 @@ def main():
         fallbacks=[]
     )
 
-    dp.add_handler(CommandHandler("start", lambda u, c: u.message.reply_text(f'Привет {u.effective_user.full_name}!')))
-    dp.add_handler(CommandHandler("help", lambda u, c: u.message.reply_text('Help!')))
+    dp.add_handler(CommandHandler("start", lambda u, c: u.message.reply_text(f'Здраствуйте проверяющий {u.effective_user.full_name}! Я вас так долго ждал. Напишите /help для вашего удобства(там есть пасхалка) !')))
+    dp.add_handler(CommandHandler("help", lambda u, c: u.message.reply_text('Для упрощения, вот список команд: /find_email /find_phone_number /verify_password /get_emails /get_phone_numbers /get_repl_logs /get_release /get_uname /get_uptime /get_df /get_free /get_mpstat /get_w /get_auths /get_critical /get_ps /get_ss /get_apt_list /get_services /what_is_it')))
+    dp.add_handler(CommandHandler("what_is_it", lambda u, c: u.message.reply_text(f' ( ͝ಠ ʖ ಠ)=ε/̵͇̿̿/’̿’̿ ̿  А чего вы ожидали?   ')))
     dp.add_handler(phone_handler)
     dp.add_handler(email_handler)
-    dp.add_handler(pswd_handler)
+    dp.add_handler(pswd_handler)                                   
+    dp.add_handler(CommandHandler("get_emails", get_emails))
     dp.add_handler(CommandHandler("get_release", lambda u, c: prt(u, r_exec('lsb_release -a'))))
     dp.add_handler(CommandHandler("get_uname", lambda u, c: prt(u, r_exec('uname -a'))))
     dp.add_handler(CommandHandler("get_uptime", lambda u, c: prt(u, r_exec('uptime'))))
