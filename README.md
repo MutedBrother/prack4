@@ -5,3 +5,6 @@
 ## Установка
 
 .env в сделку не входил(токен приложу в ноушене)
+## Запуск
+docker compose build 
+docker compose up -d
