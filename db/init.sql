@@ -8,8 +8,8 @@ CREATE TABLE emails (
   email VARCHAR(100) NOT NULL
 );
 
-INSERT INTO phones(phonenum) VALUES ('+7904567390');
-INSERT INTO phones(phonenum) VALUES ('9876543210');
+INSERT INTO phones(phone) VALUES ('+7904567390');
+INSERT INTO phones(phone) VALUES ('9876543210');
 INSERT INTO emails(email) VALUES ('test1@example.com');
 INSERT INTO emails(email) VALUES ('test2@example.com');
 
