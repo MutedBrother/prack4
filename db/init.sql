@@ -13,5 +13,5 @@ INSERT INTO phonenums(phonenum) VALUES ('9876543210');
 INSERT INTO emails(email) VALUES ('test1@example.com');
 INSERT INTO emails(email) VALUES ('test2@example.com');
 
-CREATE USER repl_user WITH REPLICATION ENCRYPTED PASSWORD 'kali';
+CREATE USER repl_user WITH REPLICATION ENCRYPTED PASSWORD 'repl_pass';
 SELECT pg_create_physical_replication_slot('replication_slot');
