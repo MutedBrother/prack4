@@ -81,7 +81,7 @@ def confirm_phones_database_write(update, context):
             cursor = connection.cursor()
             cleaned_numbers_list = re.findall(r'\d+\.\s*(\d+)', found_phone_numbers)
             for phone_number in cleaned_numbers_list:
-                cursor.execute("INSERT INTO phones (phone_number) VALUES (%s);",
+                cursor.execute("INSERT INTO phone_numbers (phone_number) VALUES (%s);",
                                (phone_number,))
             connection.commit()
             cursor.close()
@@ -212,7 +212,7 @@ def get_phone_numbers(update: Update, context):
     try:
         connection = get_conn()
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM phones;")
+        cursor.execute("SELECT * FROM phone_numbers;")
         data = cursor.fetchall()
         cursor.close()
         connection.close()
