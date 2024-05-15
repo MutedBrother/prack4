@@ -91,7 +91,7 @@ def confirm_phones_database_write(update, context):
             logging.error("Ошибка при работе с PostgreSQL: %s", error)
         update.message.reply_text("Найденные номера успешно записаны в базу данных.")
     else:
-        update.message.reply_text("Ок, не будем записывать.")
+        update.message.reply_text("Запись не будет произведена.")
 
     return ConversationHandler.END
 
@@ -116,7 +116,7 @@ def confirm_emails_database_write(update, context):
         update.message.reply_text(
             "Найденные email адреса успешно записаны в базу данных.")
     else:
-        update.message.reply_text("Ок, не будем записывать.")
+        update.message.reply_text("Запись не будет произведена.")
 
     return ConversationHandler.END
 
