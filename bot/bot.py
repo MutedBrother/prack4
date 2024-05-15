@@ -30,19 +30,10 @@ def get_conn():
                      database=os.getenv('DB_DATABASE'))
 
 
-def start(update: Update, context):
-    user = update.effective_user
-    update.message.reply_text(f'Здраствуйте проверяющий {user.full_name}! Я вас так долго ждал. Напишите /help для вашего удобства(там есть пасхалка) !')
-
 def cmd_find_phone_numbers(update: Update, context):
     update.message.reply_text('Введите текст для поиска телефонных номеров: ')
     return 'find_phone_numbers'
 
-def helpCommand(update: Update, context):
-    update.message.reply_text('Для упрощения, вот список команд: /find_email /find_phone_number /verify_password /get_emails /get_phone_numbers /get_repl_logs /get_release /get_uname /get_uptime /get_df /get_free /get_mpstat /get_w /get_auths /get_critical /get_ps /get_ss /get_apt_list /get_services /what_is_it')
-
-def superCommand(update: Update, context):
-    update.message.reply_text('  ( ͝ಠ ʖ ಠ)=ε/̵͇̿̿/’̿’̿ ̿  А чего вы ожидали?   ')
 
 
 def cmd_find_email(update: Update, context):
