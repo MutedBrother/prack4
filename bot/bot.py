@@ -29,9 +29,21 @@ def get_conn():
                      port=os.getenv('DB_PORT'),
                      database=os.getenv('DB_DATABASE'))
 
+
+def start(update: Update, context):
+    user = update.effective_user
+    update.message.reply_text(f'Здраствуйте проверяющий {user.full_name}! Я вас так долго ждал. Напишите /help для вашего удобства(там есть пасхалка) !')
+
 def cmd_find_phone_numbers(update: Update, context):
     update.message.reply_text('Введите текст для поиска телефонных номеров: ')
     return 'find_phone_numbers'
+
+def helpCommand(update: Update, context):
+    update.message.reply_text('Для упрощения, вот список команд: /find_email /find_phone_number /verify_password /get_emails /get_phone_numbers /get_repl_logs /get_release /get_uname /get_uptime /get_df /get_free /get_mpstat /get_w /get_auths /get_critical /get_ps /get_ss /get_apt_list /get_services /what_is_it')
+
+def superCommand(update: Update, context):
+    update.message.reply_text('  ( ͝ಠ ʖ ಠ)=ε/̵͇̿̿/’̿’̿ ̿  А чего вы ожидали?   ')
+
 
 def cmd_find_email(update: Update, context):
     update.message.reply_text('Введите текст для поиска email адресов: ')
@@ -69,7 +81,7 @@ def confirm_phones_database_write(update, context):
             cursor = connection.cursor()
             cleaned_numbers_list = re.findall(r'\d+\.\s*(\d+)', found_phone_numbers)
             for phone_number in cleaned_numbers_list:
-                cursor.execute("INSERT INTO phonenums (phonenum) VALUES (%s);",
+                cursor.execute("INSERT INTO phones (phone_number) VALUES (%s);",
                                (phone_number,))
             connection.commit()
             cursor.close()
@@ -112,23 +124,23 @@ def confirm_emails_database_write(update, context):
 def find_phone_numbers(update: Update, context):
     regex_a = re.compile(r'(?:\+?7|8)\s?\(?\d{3}\)?[-\s]?\d{3}[-\s]?\d{2}[-\s]?\d{2}')
     regex_b = re.compile(r'\+?7-\d{3}-\d{3}-\d{2}-\d{2}|8-\d{3}-\d{3}-\d{2}-\d{2}')
-    phone_list_a = regex_a.findall(update.message.text)  # Ищем номера телефонов
+    phone_list_a = regex_a.findall(update.message.text)  
     phone_list_b = regex_b.findall(update.message.text)
 
     if phone_list_b:
         phone_list_a.extend(phone_list_b)
 
-    if not phone_list_a: 
+    if not phone_list_a:
         update.message.reply_text('Телефонные номера не найдены')
         return ConversationHandler.END
 
 
-    numbers = '' 
+    numbers = ''
     for i in range(len(phone_list_a)):
-        numbers += f'{i + 1}. {phone_list_a[i]}\n' 
+        numbers += f'{i + 1}. {phone_list_a[i]}\n'
     global found_phone_numbers
     found_phone_numbers = numbers
-    update.message.reply_text(numbers) 
+    update.message.reply_text(numbers)
     update.message.reply_text("Хотите записать найденные номера в БД  [Да] / [Нет]:")
     return 'confirm_database_write'
 
@@ -259,7 +271,7 @@ def main():
     dp.add_handler(CommandHandler("what_is_it", lambda u, c: u.message.reply_text(f' ( ͝ಠ ʖ ಠ)=ε/̵͇̿̿/’̿’̿ ̿  А чего вы ожидали?   ')))
     dp.add_handler(phone_handler)
     dp.add_handler(email_handler)
-    dp.add_handler(pswd_handler)                                   
+    dp.add_handler(pswd_handler)
     dp.add_handler(CommandHandler("get_emails", get_emails))
     dp.add_handler(CommandHandler("get_release", lambda u, c: prt(u, r_exec('lsb_release -a'))))
     dp.add_handler(CommandHandler("get_uname", lambda u, c: prt(u, r_exec('uname -a'))))
