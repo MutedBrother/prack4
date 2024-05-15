@@ -1,6 +1,6 @@
-CREATE TABLE phonenums (
+CREATE TABLE phone_numbers (
   id SERIAL PRIMARY KEY,
-  phonenum VARCHAR(100) NOT NULL
+  phone_number VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE emails (
