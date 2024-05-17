@@ -280,7 +280,6 @@ def main():
     dp.add_handler(CommandHandler("get_repl_logs", lambda u, c: prt(u, r_exec('echo -e "Qq1234" | sudo -S cat /var/log/postgresql/postgresql-14-main.log\n'))))
     dp.add_handler(CommandHandler("get_emails", get_emails))
     dp.add_handler(CommandHandler("get_phone_numbers", get_phone_numbers))
-    dp.add_handler(CommandHandler("get_replica_logs", lambda u, c:  prt(u, r_exec('cd /home/makar/prack4 && docker compose logs postgres_primary'))))
     dp.add_handler(MessageHandler(Filters.text & ~Filters.command, lambda u, c: u.message.reply_text(u.message.text)))
 
     updater.start_polling()
